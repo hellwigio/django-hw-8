@@ -9,4 +9,4 @@ class HelloViewTests(SimpleTestCase):
         response = self.client.get('/hello/Alice/', HTTP_HOST='127.0.0.1')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content.decode(), 'Hello, Alice')
+        self.assertEqual(response.content.decode(), 'Hello, Alice!')
