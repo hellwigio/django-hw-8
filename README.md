@@ -77,3 +77,27 @@ and pinned with hashes in `requirements.txt`.
 Validation: 11 passing tests, Django system check passes, no model migration.
 `evidence/homework12-http.json` contains actual curl commands and responses for all
 four endpoints, executed against the local Django WSGI application.
+
+## Homework 13 — Serializers and APIView
+
+Continues homework 12 with the lesson's DRF tools:
+
+- `SubTaskCreateSerializer.created_at = serializers.DateTimeField(read_only=True)`.
+- `CategoryCreateSerializer.create/update` explicitly reject duplicate category names;
+  updating the same category without changing its name is allowed.
+- `TaskDetailSerializer` returns every related subtask through a nested, read-only
+  `SubTaskSerializer`. The task detail endpoint now uses this serializer.
+- `TaskCreateSerializer.validate_deadline` rejects past deadlines; the existing task
+  creation endpoint now uses this serializer.
+- `SubTaskListCreateView(APIView)`: GET and POST `/api/subtasks/`.
+- `SubTaskDetailUpdateDeleteView(APIView)`: GET, PUT, PATCH, DELETE
+  `/api/subtasks/<uuid>/` (the existing model uses UUID primary keys).
+
+A category endpoint is not required by this assignment; its serializer is verified
+through direct create/update tests. All task/subtask statuses use model choice values.
+No new dependency or migration is needed.
+
+Validation: 15 tests pass, including full subtask CRUD, nested child data,
+read-only timestamps, past-deadline rejection, invalid relations and statuses,
+404 responses, duplicate categories, unchanged names and successful renames.
+Django system checks pass; `makemigrations --check --dry-run` reports no changes.
