@@ -147,3 +147,26 @@ Validation: all 20 tests pass, Django system checks pass, no migrations required
 `evidence/homework15-http.json` contains actual HTTP responses for POST, GET,
 PATCH and DELETE for both models (201 / 200 / 200 / 204). Images attached to the
 LMS answer are formatted saved curl output, not screenshots of Postman or a browser.
+
+## Homework 16 — Category ModelViewSet and soft deletion
+
+Uses the lesson's `ModelViewSet`, `DefaultRouter`, `@action`, custom model
+manager and overridden model `delete()`.
+
+- `GET/POST /api/categories/`: list/create categories.
+- `GET/PUT/PATCH/DELETE /api/categories/<uuid>/`: retrieve/update/soft delete.
+- `GET /api/categories/count_tasks/`: every active category with its task count,
+  including categories with zero tasks (`Count('task', distinct=True)`).
+
+Migration `core/0003_category_soft_delete` adds `is_deleted=False` and nullable
+`deleted_at`. Run `python manage.py migrate` after checking out this version.
+`Category.objects` hides deleted rows; `Category.all_objects` allows internal
+inspection of retained rows. Model deletion records the current timestamp.
+QuerySet deletion also soft-deletes, covering Django admin's bulk delete path.
+Tasks and many-to-many links are preserved. Delete flags are not writable via API.
+Unique category names remain reserved by retained rows; duplicate names return 400.
+
+Validation: 24 passing tests, system checks pass, migration applies successfully
+and no pending migrations. `evidence/homework16-http.json` records actual HTTP CRUD,
+task-count action and a database check proving the row survives DELETE.
+The LMS evidence image is formatted saved curl output, not a browser/Postman screenshot.

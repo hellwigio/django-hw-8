@@ -38,13 +38,13 @@ class CategoryCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {"name": {"validators": []}}
 
     def create(self, validated_data):
-        if Category.objects.filter(name=validated_data["name"]).exists():
+        if Category.all_objects.filter(name=validated_data["name"]).exists():
             raise serializers.ValidationError({"name": "Category with this name already exists."})
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         name = validated_data.get("name", instance.name)
-        if Category.objects.filter(name=name).exclude(pk=instance.pk).exists():
+        if Category.all_objects.filter(name=name).exclude(pk=instance.pk).exists():
             raise serializers.ValidationError({"name": "Category with this name already exists."})
         return super().update(instance, validated_data)
 
