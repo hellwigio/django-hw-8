@@ -55,3 +55,25 @@ Validation: `python manage.py check`, `python manage.py test` (6 tests pass),
 `python manage.py makemigrations --check --dry-run` (no changes).
 Admin integration tests cover saving a task with its inline child, full choice labels,
 truncation at the 10-character boundary and updating only selected records.
+
+## Homework 12 — Task API (Django REST Framework)
+
+Uses the lesson's `ModelSerializer`, `@api_view`, `Response`, `status`,
+`aggregate`, `Count` and `values().annotate()`.
+
+- `POST /api/tasks/create/`: create from title, description, status, deadline; returns 201.
+- `GET /api/tasks/`: list tasks; returns 200.
+- `GET /api/tasks/<uuid>/`: retrieve by the existing UUID primary key; returns 200 or 404.
+- `GET /api/tasks/statistics/`: total, counts for every status (including zeros), overdue count.
+
+Status values: `new`, `in_progress`, `pending`, `blocked`, `done`.
+Overdue means `deadline < timezone.now()`, regardless of status.
+The tutorial API uses DRF's default permissions; authentication is outside this assignment.
+
+Full endpoint code: `core/api_views.py`, `core/api_urls.py`, `core/serializers.py`;
+root URL inclusion: `config/urls.py`. DRF is installed in `config/settings.py`
+and pinned with hashes in `requirements.txt`.
+
+Validation: 11 passing tests, Django system check passes, no model migration.
+`evidence/homework12-http.json` contains actual curl commands and responses for all
+four endpoints, executed against the local Django WSGI application.

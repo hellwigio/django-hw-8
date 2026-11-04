@@ -1,0 +1,60 @@
+[
+  {
+    "label": "POST /api/tasks/create/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--include",
+      "-H",
+      "Accept: application/json",
+      "-H",
+      "Content-Type: application/json",
+      "-X",
+      "POST",
+      "--data",
+      "{\"title\": \"Manual HTTP homework12\", \"description\": \"Task created with curl\", \"status\": \"new\", \"deadline\": \"2026-11-07T19:51:36.316900+00:00\"}",
+      "http://127.0.0.1:8766/api/tasks/create/"
+    ],
+    "output": "HTTP/1.0 201 Created\nDate: Wed, 04 Nov 2026 19:51:36 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: OPTIONS, POST\nX-Frame-Options: DENY\nContent-Length: 173\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a81d-ee9c-7012-987c-689bbf4e1266\",\"title\":\"Manual HTTP homework12\",\"description\":\"Task created with curl\",\"status\":\"new\",\"deadline\":\"2026-11-07T19:51:36.316900Z\"}"
+  },
+  {
+    "label": "GET /api/tasks/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--include",
+      "-H",
+      "Accept: application/json",
+      "http://127.0.0.1:8766/api/tasks/"
+    ],
+    "output": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 19:51:36 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: OPTIONS, GET\nX-Frame-Options: DENY\nContent-Length: 175\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n[{\"id\":\"01a1a81d-ee9c-7012-987c-689bbf4e1266\",\"title\":\"Manual HTTP homework12\",\"description\":\"Task created with curl\",\"status\":\"new\",\"deadline\":\"2026-11-07T19:51:36.316900Z\"}]"
+  },
+  {
+    "label": "GET /api/tasks/<uuid>/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--include",
+      "-H",
+      "Accept: application/json",
+      "http://127.0.0.1:8766/api/tasks/01a1a81d-ee9c-7012-987c-689bbf4e1266/"
+    ],
+    "output": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 19:51:36 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: OPTIONS, GET\nX-Frame-Options: DENY\nContent-Length: 173\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a81d-ee9c-7012-987c-689bbf4e1266\",\"title\":\"Manual HTTP homework12\",\"description\":\"Task created with curl\",\"status\":\"new\",\"deadline\":\"2026-11-07T19:51:36.316900Z\"}"
+  },
+  {
+    "label": "GET /api/tasks/statistics/",
+    "command": [
+      "curl",
+      "--silent",
+      "--show-error",
+      "--include",
+      "-H",
+      "Accept: application/json",
+      "http://127.0.0.1:8766/api/tasks/statistics/"
+    ],
+    "output": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 19:51:36 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: OPTIONS, GET\nX-Frame-Options: DENY\nContent-Length: 94\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"total\":1,\"by_status\":{\"new\":1,\"in_progress\":0,\"pending\":0,\"blocked\":0,\"done\":0},\"overdue\":0}"
+  }
+]
