@@ -1,0 +1,20 @@
+15 objects imported automatically (use -v 2 for details).
+
+1. CREATE
+{'title': 'Prepare presentation', 'description': 'Prepare materials and slides for the presentation', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 7, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+{'title': 'Create slides', 'description': 'Create presentation slides', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 5, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+{'title': 'Gather information', 'description': 'Find necessary information for the presentation', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 6, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+
+2. READ: tasks with status New
+{'title': 'Prepare presentation', 'description': 'Prepare materials and slides for the presentation', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 7, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+READ: overdue subtasks with status Done
+[] (no matching records)
+
+3. UPDATE
+{'title': 'Prepare presentation', 'description': 'Prepare materials and slides for the presentation', 'status': 'in_progress', 'deadline': datetime.datetime(2026, 11, 7, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+{'title': 'Create slides', 'description': 'Create and format presentation slides', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 5, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+{'title': 'Gather information', 'description': 'Find necessary information for the presentation', 'status': 'new', 'deadline': datetime.datetime(2026, 11, 2, 19, 6, 22, 285790, tzinfo=datetime.timezone.utc)}
+
+4. DELETE: 3 objects; {'core.SubTask': 2, 'core.Task': 1}
+Task exists: False
+Remaining subtasks: 0
