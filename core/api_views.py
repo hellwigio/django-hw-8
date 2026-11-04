@@ -1,58 +1,42 @@
 from django.db.models import Count
-from django.db.models.functions import ExtractWeekDay
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework.decorators import api_view
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.exceptions import ValidationError
 
+from .filters import SubTaskFilter, TaskFilter
 from .models import SubTask, Task
 from .pagination import SubTaskPagination
 from .serializers import (
-    SubTaskCreateSerializer, SubTaskSerializer, TaskCreateSerializer,
-    TaskDetailSerializer, TaskSerializer,
+    SubTaskCreateSerializer, TaskCreateSerializer, TaskDetailSerializer, TaskSerializer,
 )
 
 
-@api_view(["POST"])
-def task_create(request):
-    serializer = TaskCreateSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TaskListCreateView(ListCreateAPIView):
+    queryset = Task.objects.all()
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = TaskFilter
+    search_fields = ["title", "description"]
+    ordering_fields = ["created_at"]
+    ordering = ["-created_at", "-pk"]
+
+    def get_serializer_class(self):
+        return TaskCreateSerializer if self.request.method == "POST" else TaskSerializer
 
 
-@api_view(["GET"])
-def task_list(request):
-    tasks = Task.objects.all()
-    weekday = request.query_params.get("weekday")
-    if weekday:
-        # ExtractWeekDay uses Sunday=1, Monday=2, ..., Saturday=7.
-        names = {
-            "sunday": 1, "monday": 2, "tuesday": 3, "wednesday": 4,
-            "thursday": 5, "friday": 6, "saturday": 7,
-            "воскресенье": 1, "понедельник": 2, "вторник": 3, "среда": 4,
-            "четверг": 5, "пятница": 6, "суббота": 7,
-        }
-        value = weekday.strip().lower()
-        number = int(value) if value in {"1", "2", "3", "4", "5", "6", "7"} else names.get(value)
-        if number is None:
-            raise ValidationError({"weekday": "Use 1-7 (Sunday=1), or a weekday name."})
-        tasks = tasks.annotate(weekday=ExtractWeekDay("deadline")).filter(weekday=number)
-    serializer = TaskSerializer(tasks, many=True)
-    return Response(serializer.data)
+class TaskCreateView(CreateAPIView):
+    """Keep the earlier /tasks/create/ URL available for existing clients."""
+    queryset = Task.objects.all()
+    serializer_class = TaskCreateSerializer
 
 
-@api_view(["GET"])
-def task_detail(request, pk):
-    try:
-        task = Task.objects.prefetch_related("subtasks").get(pk=pk)
-    except Task.DoesNotExist:
-        return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-    return Response(TaskDetailSerializer(task).data)
+class TaskDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.prefetch_related("subtasks")
+
+    def get_serializer_class(self):
+        return TaskDetailSerializer if self.request.method == "GET" else TaskCreateSerializer
 
 
 @api_view(["GET"])
@@ -67,49 +51,18 @@ def task_statistics(request):
     return Response({"total": total, "by_status": by_status, "overdue": overdue})
 
 
-class SubTaskListCreateView(APIView):
-    def get(self, request):
-        subtasks = SubTask.objects.all()
-        task_title = request.query_params.get("task_title")
-        subtask_status = request.query_params.get("status")
-        if task_title:
-            subtasks = subtasks.filter(task__title=task_title)
-        if subtask_status:
-            if subtask_status not in Task.Status.values:
-                raise ValidationError({"status": "Invalid subtask status."})
-            subtasks = subtasks.filter(status=subtask_status)
-        subtasks = subtasks.order_by("-created_at", "-pk")
-        paginator = SubTaskPagination()
-        page = paginator.paginate_queryset(subtasks, request, view=self)
-        return paginator.get_paginated_response(SubTaskSerializer(page, many=True).data)
 
-    def post(self, request):
-        serializer = SubTaskCreateSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+class SubTaskListCreateView(ListCreateAPIView):
+    queryset = SubTask.objects.all()
+    serializer_class = SubTaskCreateSerializer
+    pagination_class = SubTaskPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_class = SubTaskFilter
+    search_fields = ["title", "description"]
+    ordering_fields = ["created_at"]
+    ordering = ["-created_at", "-pk"]
 
 
-class SubTaskDetailUpdateDeleteView(APIView):
-    def get(self, request, pk):
-        subtask = get_object_or_404(SubTask, pk=pk)
-        return Response(SubTaskSerializer(subtask).data)
-
-    def put(self, request, pk):
-        subtask = get_object_or_404(SubTask, pk=pk)
-        serializer = SubTaskCreateSerializer(subtask, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-
-    def patch(self, request, pk):
-        subtask = get_object_or_404(SubTask, pk=pk)
-        serializer = SubTaskCreateSerializer(subtask, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-
-    def delete(self, request, pk):
-        subtask = get_object_or_404(SubTask, pk=pk)
-        subtask.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class SubTaskDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = SubTask.objects.all()
+    serializer_class = SubTaskCreateSerializer

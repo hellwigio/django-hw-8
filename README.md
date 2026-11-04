@@ -124,3 +124,26 @@ Validation: all 18 tests pass. Tests cover weekdays (including Sunday numbering)
 no filter, each filter separately, combined filters, empty results, ordering,
 page transitions and the hard five-object page limit. The earlier subtask CRUD test
 was updated to read the paginated `results` array.
+
+## Homework 15 — Generic Views, filtering, search and ordering
+
+Task and subtask lists now use `ListCreateAPIView`; their detail endpoints use
+`RetrieveUpdateDestroyAPIView` for GET, PUT, PATCH and DELETE. Task statistics
+retains its previous implementation. The earlier `/api/tasks/create/` route stays
+available through `CreateAPIView`, while POST `/api/tasks/` is the primary route.
+
+Installed the lesson's `django-filter` (pinned with hashes). Both lists use
+`DjangoFilterBackend`, `SearchFilter`, `OrderingFilter`:
+
+- `?status=done` and `?deadline=2026-12-01T12:00:00Z`: exact filters;
+- `?search=report`: search title and description;
+- `?ordering=created_at` or `?ordering=-created_at`: oldest/newest first.
+
+The earlier task weekday filter, subtask parent-title filter and subtask pagination
+(maximum five per page) are retained. Task detail still returns nested subtasks;
+creation/update still validates task deadlines.
+
+Validation: all 20 tests pass, Django system checks pass, no migrations required.
+`evidence/homework15-http.json` contains actual HTTP responses for POST, GET,
+PATCH and DELETE for both models (201 / 200 / 200 / 204). Images attached to the
+LMS answer are formatted saved curl output, not screenshots of Postman or a browser.

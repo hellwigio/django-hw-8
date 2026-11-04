@@ -1,0 +1,42 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/tasks/",
+    "response": "HTTP/1.0 201 Created\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, POST, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 169\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\",\"title\":\"Generic CRUD demonstration\",\"description\":\"Manual request\",\"status\":\"new\",\"deadline\":\"2026-11-07T20:30:16.149766Z\"}"
+  },
+  {
+    "method": "POST",
+    "path": "/api/subtasks/",
+    "response": "HTTP/1.0 201 Created\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, POST, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 320\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-5490-72a3-9b7f-d70dbe61f25c\",\"created_at\":\"2026-11-04T20:30:16.209484Z\",\"updated_at\":\"2026-11-04T20:30:16.209501Z\",\"deleted_at\":null,\"title\":\"Generic child demonstration\",\"description\":\"Manual request\",\"status\":\"new\",\"deadline\":\"2026-11-07T20:30:16.149766Z\",\"task\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\"}"
+  },
+  {
+    "method": "GET",
+    "path": "/api/subtasks/01a1a841-5490-72a3-9b7f-d70dbe61f25c/",
+    "response": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 320\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-5490-72a3-9b7f-d70dbe61f25c\",\"created_at\":\"2026-11-04T20:30:16.209484Z\",\"updated_at\":\"2026-11-04T20:30:16.209501Z\",\"deleted_at\":null,\"title\":\"Generic child demonstration\",\"description\":\"Manual request\",\"status\":\"new\",\"deadline\":\"2026-11-07T20:30:16.149766Z\",\"task\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\"}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/subtasks/01a1a841-5490-72a3-9b7f-d70dbe61f25c/",
+    "response": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 321\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-5490-72a3-9b7f-d70dbe61f25c\",\"created_at\":\"2026-11-04T20:30:16.209484Z\",\"updated_at\":\"2026-11-04T20:30:16.246494Z\",\"deleted_at\":null,\"title\":\"Generic child demonstration\",\"description\":\"Manual request\",\"status\":\"done\",\"deadline\":\"2026-11-07T20:30:16.149766Z\",\"task\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\"}"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/subtasks/01a1a841-5490-72a3-9b7f-d70dbe61f25c/",
+    "response": "HTTP/1.0 204 No Content\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 0\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n"
+  },
+  {
+    "method": "GET",
+    "path": "/api/tasks/01a1a841-547d-7683-84c0-a29d2b7907f1/",
+    "response": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 183\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\",\"title\":\"Generic CRUD demonstration\",\"description\":\"Manual request\",\"status\":\"new\",\"deadline\":\"2026-11-07T20:30:16.149766Z\",\"subtasks\":[]}"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/tasks/01a1a841-547d-7683-84c0-a29d2b7907f1/",
+    "response": "HTTP/1.0 200 OK\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nContent-Type: application/json\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 170\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n{\"id\":\"01a1a841-547d-7683-84c0-a29d2b7907f1\",\"title\":\"Generic CRUD demonstration\",\"description\":\"Manual request\",\"status\":\"done\",\"deadline\":\"2026-11-07T20:30:16.149766Z\"}"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/tasks/01a1a841-547d-7683-84c0-a29d2b7907f1/",
+    "response": "HTTP/1.0 204 No Content\nDate: Wed, 04 Nov 2026 20:30:16 GMT\nServer: WSGIServer/0.2 CPython/3.14.9\nVary: Accept, Cookie\nAllow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS\nX-Frame-Options: DENY\nContent-Length: 0\nX-Content-Type-Options: nosniff\nReferrer-Policy: same-origin\nCross-Origin-Opener-Policy: same-origin\n\n"
+  }
+]
