@@ -101,3 +101,26 @@ Validation: 15 tests pass, including full subtask CRUD, nested child data,
 read-only timestamps, past-deadline rejection, invalid relations and statuses,
 404 responses, duplicate categories, unchanged names and successful renames.
 Django system checks pass; `makemigrations --check --dry-run` reports no changes.
+
+## Homework 14 — Query parameters and pagination
+
+Uses `request.query_params`, `ExtractWeekDay` and DRF `PageNumberPagination`
+from the lesson notes. No new dependencies or model migrations.
+
+- `GET /api/tasks/`: all tasks when `weekday` is absent or empty.
+- `GET /api/tasks/?weekday=tuesday`: tasks whose **deadline** falls on Tuesday.
+  English and Russian weekday names are case-insensitive. Numbers follow Django's
+  `ExtractWeekDay`: Sunday=1, Monday=2, Tuesday=3, ..., Saturday=7. Invalid values return 400.
+  Date extraction follows the configured Django timezone (UTC in this project).
+- `GET /api/subtasks/`: newest first (`-created_at`, `-pk`), five per page.
+  The response contains `count`, `next`, `previous`, `results`.
+  `?page=2` selects another page; `page_size` can reduce the size but never exceed 5.
+- `?task_title=Tuesday%20task`: exact parent task title match.
+- `?status=done`: subtask status filter (model values, e.g. new, in_progress, done).
+- Both filters combine with AND; omitted/empty filters do not narrow results.
+  Filtering happens before pagination. Invalid status returns 400.
+
+Validation: all 18 tests pass. Tests cover weekdays (including Sunday numbering),
+no filter, each filter separately, combined filters, empty results, ordering,
+page transitions and the hard five-object page limit. The earlier subtask CRUD test
+was updated to read the paginated `results` array.

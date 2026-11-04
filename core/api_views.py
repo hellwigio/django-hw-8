@@ -1,12 +1,15 @@
 from django.db.models import Count
+from django.db.models.functions import ExtractWeekDay
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 
 from .models import SubTask, Task
+from .pagination import SubTaskPagination
 from .serializers import (
     SubTaskCreateSerializer, SubTaskSerializer, TaskCreateSerializer,
     TaskDetailSerializer, TaskSerializer,
@@ -24,7 +27,22 @@ def task_create(request):
 
 @api_view(["GET"])
 def task_list(request):
-    serializer = TaskSerializer(Task.objects.all(), many=True)
+    tasks = Task.objects.all()
+    weekday = request.query_params.get("weekday")
+    if weekday:
+        # ExtractWeekDay uses Sunday=1, Monday=2, ..., Saturday=7.
+        names = {
+            "sunday": 1, "monday": 2, "tuesday": 3, "wednesday": 4,
+            "thursday": 5, "friday": 6, "saturday": 7,
+            "воскресенье": 1, "понедельник": 2, "вторник": 3, "среда": 4,
+            "четверг": 5, "пятница": 6, "суббота": 7,
+        }
+        value = weekday.strip().lower()
+        number = int(value) if value in {"1", "2", "3", "4", "5", "6", "7"} else names.get(value)
+        if number is None:
+            raise ValidationError({"weekday": "Use 1-7 (Sunday=1), or a weekday name."})
+        tasks = tasks.annotate(weekday=ExtractWeekDay("deadline")).filter(weekday=number)
+    serializer = TaskSerializer(tasks, many=True)
     return Response(serializer.data)
 
 
@@ -51,7 +69,19 @@ def task_statistics(request):
 
 class SubTaskListCreateView(APIView):
     def get(self, request):
-        return Response(SubTaskSerializer(SubTask.objects.all(), many=True).data)
+        subtasks = SubTask.objects.all()
+        task_title = request.query_params.get("task_title")
+        subtask_status = request.query_params.get("status")
+        if task_title:
+            subtasks = subtasks.filter(task__title=task_title)
+        if subtask_status:
+            if subtask_status not in Task.Status.values:
+                raise ValidationError({"status": "Invalid subtask status."})
+            subtasks = subtasks.filter(status=subtask_status)
+        subtasks = subtasks.order_by("-created_at", "-pk")
+        paginator = SubTaskPagination()
+        page = paginator.paginate_queryset(subtasks, request, view=self)
+        return paginator.get_paginated_response(SubTaskSerializer(page, many=True).data)
 
     def post(self, request):
         serializer = SubTaskCreateSerializer(data=request.data)

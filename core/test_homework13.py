@@ -27,7 +27,7 @@ class Homework13Tests(APITestCase):
         self.assertGreater(child.created_at.year, 2000)
         original_created_at = child.created_at
         detail = reverse("api:subtask-detail", args=[child.pk])
-        self.assertEqual(self.client.get(url).data[0]["id"], str(child.pk))
+        self.assertEqual(self.client.get(url).data["results"][0]["id"], str(child.pk))
         self.assertEqual(self.client.get(detail).status_code, 200)
         response = self.client.put(detail, self.payload(title="Updated", status="in_progress"), format="json")
         self.assertEqual(response.status_code, 200)
