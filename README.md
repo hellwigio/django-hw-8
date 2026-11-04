@@ -38,3 +38,20 @@ needed for these assignment queries.
 
 The management command `python manage.py homework10` is an alternative launcher
 for the same queries. The transaction is a safeguard for repeatable execution.
+
+## Homework 11 — Admin inlines and actions
+
+Implemented using the lesson's built-in Django admin tools in `core/admin.py`:
+
+- `SubTaskInline(admin.StackedInline)` with `extra = 1`, registered in `TaskAdmin.inlines`.
+- `short_title` in the task list: first 10 characters plus `...` only for longer titles.
+  `Task.__str__()` still returns the complete title used in the subtask task selector.
+- `SubTaskAdmin.mark_done` registered in `actions`, with `short_description` and
+  `queryset.update(status=Task.Status.DONE)` for selected subtasks only.
+
+No new dependency or model migration is required.
+
+Validation: `python manage.py check`, `python manage.py test` (6 tests pass),
+`python manage.py makemigrations --check --dry-run` (no changes).
+Admin integration tests cover saving a task with its inline child, full choice labels,
+truncation at the 10-character boundary and updating only selected records.
