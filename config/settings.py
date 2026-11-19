@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'core.middleware.HttpRequestLoggingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,5 +147,43 @@ STATIC_URL = 'static/'
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'core.pagination.ProjectCursorPagination',
+    'PAGE_SIZE': 6,
+}
+
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {'format': '{asctime} {levelname} {name} {message}', 'style': '{'},
+    },
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler', 'formatter': 'standard'},
+        'http_file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'standard',
+            'filename': LOG_DIR / 'http_logs.log',
+            'encoding': 'utf-8',
+        },
+        'db_file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'standard',
+            'filename': LOG_DIR / 'db_logs.log',
+            'encoding': 'utf-8',
+        },
+    },
+    'loggers': {
+        'django': {'handlers': ['console'], 'level': 'INFO', 'propagate': False},
+        'django.server': {'handlers': ['console'], 'level': 'INFO', 'propagate': False},
+        'project.http': {'handlers': ['http_file'], 'level': 'INFO', 'propagate': False},
+        'django.db.backends': {'handlers': ['db_file'], 'level': 'DEBUG', 'propagate': False},
     },
 }

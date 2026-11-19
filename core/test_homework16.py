@@ -27,7 +27,7 @@ class Homework16Tests(APITestCase):
         self.assertTrue(deleted.is_deleted)
         self.assertGreaterEqual(deleted.deleted_at, before)
         self.assertFalse(Category.objects.filter(pk=pk).exists())
-        self.assertEqual(self.client.get(url).data, [])
+        self.assertEqual(self.client.get(url).data["results"], [])
         self.assertEqual(self.client.get(detail).status_code, 404)
         self.assertEqual(self.client.delete(detail).status_code, 404)
         self.assertTrue(Task.objects.filter(pk=task.pk).exists())
@@ -46,7 +46,7 @@ class Homework16Tests(APITestCase):
         deleted.delete()
         response = self.client.get(reverse("api:category-count-tasks"))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual({r["name"]: r["task_count"] for r in response.data}, {"Empty": 0, "First": 2})
+        self.assertEqual({r["name"]: r["task_count"] for r in response.data["results"]}, {"Empty": 0, "First": 2})
 
     def test_queryset_delete_is_also_soft(self):
         category = Category.objects.create(name="Bulk")

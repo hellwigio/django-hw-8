@@ -42,7 +42,7 @@ class Homework15Tests(APITestCase):
                 def rows(params):
                     response = self.client.get(url, params)
                     self.assertEqual(response.status_code, 200)
-                    return response.data["results"] if model is SubTask else response.data
+                    return response.data["results"]
 
                 self.assertEqual([r["id"] for r in rows({"search": "Alpha"})], [str(first.pk)])
                 self.assertEqual([r["id"] for r in rows({"search": "Needle"})], [str(first.pk)])

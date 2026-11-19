@@ -8,7 +8,6 @@ from rest_framework.response import Response
 
 from .filters import SubTaskFilter, TaskFilter
 from .models import SubTask, Task
-from .pagination import SubTaskPagination
 from .serializers import (
     SubTaskCreateSerializer, TaskCreateSerializer, TaskDetailSerializer, TaskSerializer,
 )
@@ -55,7 +54,6 @@ def task_statistics(request):
 class SubTaskListCreateView(ListCreateAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer
-    pagination_class = SubTaskPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = SubTaskFilter
     search_fields = ["title", "description"]
