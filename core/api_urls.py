@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from . import api_views
+from . import api_views, auth_views
 from .category_views import CategoryViewSet
 
 app_name = "api"
@@ -11,6 +11,11 @@ router = DefaultRouter()
 router.register("categories", CategoryViewSet, basename="category")
 
 urlpatterns = [
+    path("auth/register/", auth_views.RegisterView.as_view(), name="register"),
+    path("auth/csrf/", auth_views.CsrfView.as_view(), name="auth-csrf"),
+    path("auth/login/", auth_views.CookieLoginView.as_view(), name="auth-login"),
+    path("auth/refresh/", auth_views.CookieRefreshView.as_view(), name="auth-refresh"),
+    path("auth/logout/", auth_views.CookieLogoutView.as_view(), name="auth-logout"),
     path("token/", TokenObtainPairView.as_view(), name="token-obtain-pair"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("subtasks/", api_views.SubTaskListCreateView.as_view(), name="subtask-list-create"),

@@ -170,3 +170,21 @@ Validation: 24 passing tests, system checks pass, migration applies successfully
 and no pending migrations. `evidence/homework16-http.json` records actual HTTP CRUD,
 task-count action and a database check proving the row survives DELETE.
 The LMS evidence image is formatted saved curl output, not a browser/Postman screenshot.
+
+## Browser authentication
+
+Run `python manage.py migrate` to create the registration and SimpleJWT
+blacklist tables. Use HTTPS and configure a strong, secret `SECRET_KEY`.
+
+1. Register with `POST /api/auth/register/` and JSON containing `username`,
+   `email` and `password`.
+2. Get `csrfToken` from `GET /api/auth/csrf/`. Send it as `X-CSRFToken` to
+   `POST /api/auth/login/` with the username and password.
+3. Store the new CSRF token from the login response for subsequent unsafe
+   requests. The browser sends both JWT cookies where their paths apply.
+4. Use `POST /api/auth/refresh/` to rotate the refresh token and renew access,
+   or `POST /api/auth/logout/` to revoke the current pair and clear the cookies.
+   Both requests use the CSRF header and need no JSON body.
+
+The existing `/api/token/` and `/api/token/refresh/` JSON endpoints support
+non-browser clients using the Authorization header.
