@@ -1,0 +1,125 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/tasks/",
+    "bearer": false,
+    "status": 401,
+    "body": {
+      "detail": "Authentication credentials were not provided."
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/tasks/",
+    "bearer": false,
+    "status": 401,
+    "body": {
+      "detail": "Authentication credentials were not provided."
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/token/",
+    "bearer": false,
+    "status": 200,
+    "body": {
+      "refresh": "[redacted]",
+      "access": "[redacted]"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/token/refresh/",
+    "bearer": false,
+    "status": 200,
+    "body": {
+      "access": "[redacted]"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/tasks/",
+    "bearer": true,
+    "status": 201,
+    "body": {
+      "id": "01a1f3c4-61d4-7530-8ef1-b211239b1b2d",
+      "title": "Created via JWT",
+      "description": "Demo request",
+      "status": "new",
+      "deadline": "2026-11-20T12:24:55.751726Z"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/tasks/",
+    "bearer": true,
+    "status": 200,
+    "body": {
+      "next": "http://127.0.0.1:36665/api/tasks/?cursor=cD0yMDI2LTExLTE5KzEyJTNBMjQlM0E1NS43NTI2NjYlMkIwMCUzQTAw",
+      "previous": null,
+      "results": [
+        {
+          "id": "01a1f3c4-61d4-7530-8ef1-b211239b1b2d",
+          "title": "Created via JWT",
+          "description": "Demo request",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        },
+        {
+          "id": "01a1f3c4-60c9-73ed-a59d-d12f6a6bf3c0",
+          "title": "Demo 5",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        },
+        {
+          "id": "01a1f3c4-60c8-77ce-a221-59d197bb6d8a",
+          "title": "Demo 4",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        },
+        {
+          "id": "01a1f3c4-60c8-77ce-a221-59d059ac5c05",
+          "title": "Demo 3",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        },
+        {
+          "id": "01a1f3c4-60c8-77ce-a221-59cf58b5781f",
+          "title": "Demo 2",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/tasks/?cursor=cD0yMDI2LTExLTE5KzEyJTNBMjQlM0E1NS43NTI2NjYlMkIwMCUzQTAw",
+    "bearer": true,
+    "status": 200,
+    "body": {
+      "next": null,
+      "previous": "http://127.0.0.1:36665/api/tasks/?cursor=cj0xJnA9MjAyNi0xMS0xOSsxMiUzQTI0JTNBNTUuNzUyNDk2JTJCMDAlM0EwMA%3D%3D",
+      "results": [
+        {
+          "id": "01a1f3c4-60c8-77ce-a221-59ce6fbc9fda",
+          "title": "Demo 1",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        },
+        {
+          "id": "01a1f3c4-60c8-77ce-a221-59cd8fece224",
+          "title": "Demo 0",
+          "description": "",
+          "status": "new",
+          "deadline": "2026-11-20T12:24:55.751726Z"
+        }
+      ]
+    }
+  }
+]

@@ -2,13 +2,14 @@ from datetime import datetime, timedelta, timezone as dt_timezone
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.test import APITestCase
+from core.api_test_helpers import AuthenticatedAPITestCase
 
 from core.models import SubTask, Task
 
 
-class Homework14Tests(APITestCase):
+class Homework14Tests(AuthenticatedAPITestCase):
     def setUp(self):
+        super().setUp()
         self.tuesday = Task.objects.create(title="Tuesday task", description="Tuesday",
                                           deadline=datetime(2026, 11, 10, 12, tzinfo=dt_timezone.utc))
         self.sunday = Task.objects.create(title="Sunday task", description="Sunday",
@@ -37,18 +38,18 @@ class Homework14Tests(APITestCase):
     def test_pagination_newest_first_and_hard_limit(self):
         url = reverse("api:subtask-list-create")
         page1 = self.client.get(url).data
-        self.assertEqual([r["title"] for r in page1["results"]], [f"Child {i}" for i in range(7, 1, -1)])
+        self.assertEqual([r["title"] for r in page1["results"]], [f"Child {i}" for i in range(7, 2, -1)])
         self.assertIsNotNone(page1["next"])
         page2 = self.client.get(page1["next"]).data
-        self.assertEqual([r["title"] for r in page2["results"]], ["Child 1", "Child 0"])
+        self.assertEqual([r["title"] for r in page2["results"]], ["Child 2", "Child 1", "Child 0"])
         self.assertIsNone(page2["next"])
-        self.assertEqual(len(self.client.get(url, {"page_size": 100}).data["results"]), 6)
-        self.assertEqual(len(self.client.get(url, {"page_size": 2}).data["results"]), 6)
+        self.assertEqual(len(self.client.get(url, {"page_size": 100}).data["results"]), 5)
+        self.assertEqual(len(self.client.get(url, {"page_size": 2}).data["results"]), 5)
         self.assertEqual(self.client.get(url, {"cursor": "a"}).status_code, 404)
 
     def test_filters_individually_and_together(self):
         url = reverse("api:subtask-list-create")
-        self.assertEqual(len(self.client.get(url, {"task_title": "Tuesday task"}).data["results"]), 6)
+        self.assertEqual(len(self.client.get(url, {"task_title": "Tuesday task"}).data["results"]), 5)
         self.assertEqual(len(self.client.get(url, {"status": "done"}).data["results"]), 4)
         response = self.client.get(url, {"task_title": "Tuesday task", "status": "done"}).data
         self.assertEqual(len(response["results"]), 3)

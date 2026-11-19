@@ -4,14 +4,15 @@ from uuid import uuid4
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import serializers
-from rest_framework.test import APITestCase
+from core.api_test_helpers import AuthenticatedAPITestCase
 
 from core.models import Category, SubTask, Task
 from core.serializers import CategoryCreateSerializer
 
 
-class Homework13Tests(APITestCase):
+class Homework13Tests(AuthenticatedAPITestCase):
     def setUp(self):
+        super().setUp()
         self.task = Task.objects.create(title="Parent", description="Parent task",
                                        deadline=timezone.now() + timedelta(days=3))
 

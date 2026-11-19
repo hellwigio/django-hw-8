@@ -2,12 +2,12 @@ from datetime import timedelta
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.test import APITestCase
+from core.api_test_helpers import AuthenticatedAPITestCase
 
 from core.models import Category, Task
 
 
-class Homework16Tests(APITestCase):
+class Homework16Tests(AuthenticatedAPITestCase):
     def test_category_crud_soft_deletes_and_hides_record(self):
         url = reverse("api:category-list")
         response = self.client.post(url, {"name": "Work"}, format="json")

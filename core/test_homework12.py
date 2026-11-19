@@ -3,12 +3,12 @@ from uuid import uuid4
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.test import APITestCase
+from core.api_test_helpers import AuthenticatedAPITestCase
 
 from core.models import Task
 
 
-class TaskApiTests(APITestCase):
+class TaskApiTests(AuthenticatedAPITestCase):
     def payload(self, **changes):
         return {
             "title": "API task", "description": "Created via API", "status": "new",

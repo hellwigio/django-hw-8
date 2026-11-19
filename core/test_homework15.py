@@ -2,12 +2,12 @@ from datetime import timedelta
 
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.test import APITestCase
+from core.api_test_helpers import AuthenticatedAPITestCase
 
 from core.models import SubTask, Task
 
 
-class Homework15Tests(APITestCase):
+class Homework15Tests(AuthenticatedAPITestCase):
     def test_task_full_crud_through_generic_views(self):
         payload = {"title": "Generic task", "description": "Create", "status": "new",
                    "deadline": (timezone.now() + timedelta(days=2)).isoformat()}
