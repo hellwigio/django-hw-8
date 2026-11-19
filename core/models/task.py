@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from .base import TimeStampedModel, UUIDv7Model
@@ -11,6 +12,10 @@ class Task(UUIDv7Model, TimeStampedModel):
         BLOCKED = "blocked", "Blocked"
         DONE = "done", "Done"
 
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="owned_tasks",
+    )
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     categories = models.ManyToManyField("Category", blank=True)

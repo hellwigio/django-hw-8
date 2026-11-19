@@ -18,6 +18,7 @@ urlpatterns = [
          name="subtask-detail"),
     path("tasks/create/", api_views.TaskCreateView.as_view(), name="task-create"),
     path("tasks/", api_views.TaskListCreateView.as_view(), name="task-list"),
+    path("tasks/mine/", api_views.MyTaskListView.as_view(), name="task-mine"),
     path("tasks/statistics/", api_views.task_statistics, name="task-statistics"),
     path("tasks/<uuid:pk>/", api_views.TaskDetailUpdateDeleteView.as_view(), name="task-detail"),
 ] + router.urls

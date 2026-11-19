@@ -1,0 +1,41 @@
+Creating test database for alias 'default'...
+.......2026-11-19 12:29:24,955 WARNING django.request Bad Request: /api/tasks/create/
+2026-11-19 12:29:24,957 WARNING django.request Bad Request: /api/tasks/create/
+2026-11-19 12:29:24,958 WARNING django.request Bad Request: /api/tasks/create/
+2026-11-19 12:29:24,960 WARNING django.request Bad Request: /api/tasks/create/
+.2026-11-19 12:29:24,963 WARNING django.request Not Found: /api/tasks/ca836344-735e-41a3-a303-9179b6a57e11/
+2026-11-19 12:29:24,963 WARNING django.request Method Not Allowed: /api/tasks/create/
+...2026-11-19 12:29:24,977 WARNING django.request Bad Request: /api/subtasks/
+2026-11-19 12:29:24,979 WARNING django.request Bad Request: /api/subtasks/
+2026-11-19 12:29:24,981 WARNING django.request Bad Request: /api/subtasks/
+2026-11-19 12:29:24,983 WARNING django.request Not Found: /api/subtasks/6bc96394-c793-4cce-8963-aa714a2746d9/
+2026-11-19 12:29:24,984 WARNING django.request Not Found: /api/subtasks/6bc96394-c793-4cce-8963-aa714a2746d9/
+2026-11-19 12:29:24,987 WARNING django.request Not Found: /api/subtasks/6bc96394-c793-4cce-8963-aa714a2746d9/
+2026-11-19 12:29:24,989 WARNING django.request Not Found: /api/subtasks/6bc96394-c793-4cce-8963-aa714a2746d9/
+.2026-11-19 12:29:25,033 WARNING django.request Not Found: /api/subtasks/01a1f3c8-7c84-7089-96c9-1eab2aab49ba/
+.2026-11-19 12:29:25,037 WARNING django.request Bad Request: /api/tasks/create/
+.2026-11-19 12:29:25,063 WARNING django.request Bad Request: /api/subtasks/
+.2026-11-19 12:29:25,085 WARNING django.request Not Found: /api/subtasks/
+.2026-11-19 12:29:25,115 WARNING django.request Bad Request: /api/tasks/
+.2026-11-19 12:29:25,129 WARNING django.request Bad Request: /api/tasks/
+2026-11-19 12:29:25,148 WARNING django.request Bad Request: /api/subtasks/
+.2026-11-19 12:29:25,164 WARNING django.request Not Found: /api/tasks/01a1f3c8-7d1e-77d6-8c85-6559532d15bb/
+.2026-11-19 12:29:25,168 WARNING django.request Bad Request: /api/categories/
+.2026-11-19 12:29:25,182 WARNING django.request Not Found: /api/categories/01a1f3c8-7d31-7163-ab74-bc5a1a572892/
+2026-11-19 12:29:25,183 WARNING django.request Not Found: /api/categories/01a1f3c8-7d31-7163-ab74-bc5a1a572892/
+2026-11-19 12:29:25,184 WARNING django.request Bad Request: /api/categories/
+...2026-11-19 12:29:25,435 WARNING django.request Unauthorized: /api/tasks/
+2026-11-19 12:29:25,437 WARNING django.request Unauthorized: /api/tasks/
+2026-11-19 12:29:25,699 WARNING django.request Unauthorized: /api/token/
+..2026-11-19 12:29:25,984 WARNING django.request Forbidden: /api/tasks/01a1f3c8-8051-73d6-a12f-1cc6179ccc85/
+2026-11-19 12:29:25,986 WARNING django.request Forbidden: /api/tasks/01a1f3c8-8051-73d6-a12f-1cc6179ccc85/
+2026-11-19 12:29:25,994 WARNING django.request Forbidden: /api/subtasks/01a1f3c8-8055-70bb-acd1-01dd93082f9d/
+2026-11-19 12:29:25,996 WARNING django.request Forbidden: /api/subtasks/01a1f3c8-8055-70bb-acd1-01dd93082f9d/
+..
+----------------------------------------------------------------------
+Ran 27 tests in 2.227s
+
+OK
+Destroying test database for alias 'default'...
+Found 27 test(s).
+System check identified no issues (0 silenced).

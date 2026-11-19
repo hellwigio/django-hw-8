@@ -3,17 +3,24 @@ from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.decorators import api_view
-from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .filters import SubTaskFilter, TaskFilter
 from .models import SubTask, Task
+from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     SubTaskCreateSerializer, TaskCreateSerializer, TaskDetailSerializer, TaskSerializer,
 )
 
 
-class TaskListCreateView(ListCreateAPIView):
+class AssignOwnerOnCreate:
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class TaskListCreateView(AssignOwnerOnCreate, ListCreateAPIView):
     queryset = Task.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = TaskFilter
@@ -25,17 +32,28 @@ class TaskListCreateView(ListCreateAPIView):
         return TaskCreateSerializer if self.request.method == "POST" else TaskSerializer
 
 
-class TaskCreateView(CreateAPIView):
+class TaskCreateView(AssignOwnerOnCreate, CreateAPIView):
     """Keep the earlier /tasks/create/ URL available for existing clients."""
     queryset = Task.objects.all()
     serializer_class = TaskCreateSerializer
 
 
 class TaskDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Task.objects.prefetch_related("subtasks")
 
     def get_serializer_class(self):
         return TaskDetailSerializer if self.request.method == "GET" else TaskCreateSerializer
+
+
+class MyTaskListView(ListAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return self.queryset.none()
+        return self.queryset.filter(owner=self.request.user)
 
 
 @api_view(["GET"])
@@ -51,7 +69,7 @@ def task_statistics(request):
 
 
 
-class SubTaskListCreateView(ListCreateAPIView):
+class SubTaskListCreateView(AssignOwnerOnCreate, ListCreateAPIView):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -62,5 +80,6 @@ class SubTaskListCreateView(ListCreateAPIView):
 
 
 class SubTaskDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     queryset = SubTask.objects.all()
     serializer_class = SubTaskCreateSerializer

@@ -7,8 +7,8 @@ from .models import Category, SubTask, Task
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ["id", "title", "description", "status", "deadline"]
-        read_only_fields = ["id"]
+        fields = ["id", "title", "description", "status", "deadline", "owner"]
+        read_only_fields = ["id", "owner"]
 
 
 class TaskCreateSerializer(TaskSerializer):
@@ -22,7 +22,7 @@ class SubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTask
         fields = "__all__"
-        read_only_fields = ["id", "created_at", "updated_at", "deleted_at"]
+        read_only_fields = ["id", "created_at", "updated_at", "deleted_at", "owner"]
 
 
 class SubTaskCreateSerializer(SubTaskSerializer):

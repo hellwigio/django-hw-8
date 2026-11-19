@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_yasg',
     'django_filters',
     'core',
 ]
@@ -197,5 +198,17 @@ LOGGING = {
         'django.server': {'handlers': ['console'], 'level': 'INFO', 'propagate': False},
         'project.http': {'handlers': ['http_file'], 'level': 'INFO', 'propagate': False},
         'django.db.backends': {'handlers': ['db_file'], 'level': 'DEBUG', 'propagate': False},
+    },
+}
+
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'Enter Bearer followed by a space and your access token.',
+        },
     },
 }

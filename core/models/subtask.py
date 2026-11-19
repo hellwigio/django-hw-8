@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from .base import TimeStampedModel, UUIDv7Model
@@ -5,6 +6,10 @@ from .task import Task
 
 
 class SubTask(UUIDv7Model, TimeStampedModel):
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="owned_subtasks",
+    )
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="subtasks")
