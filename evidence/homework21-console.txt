@@ -1,0 +1,42 @@
+2026-11-19 12:48:03,431 INFO django.server "GET /swagger.json HTTP/1.1" 200 20330
+2026-11-19 12:48:03,737 INFO django.server "POST /api/auth/register/ HTTP/1.1" 201 54
+2026-11-19 12:48:03,947 INFO django.server "POST /api/token/ HTTP/1.1" 200 489
+2026-11-19 12:48:03,955 INFO django.server "POST /api/tasks/ HTTP/1.1" 201 172
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 19, 2026 - 12:48:02
+Django version 6.1.1, using settings 'demo_settings'
+Starting WSGI development server at http://127.0.0.1:18721/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.1/howto/deployment/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Task status changed
+From: webmaster@localhost
+To: owner@example.com
+Date: Thu, 19 Nov 2026 12:48:03 +0000
+Message-ID: <179509248396.14.1870398098786309840@cc5aab186581>
+
+Task "Status notification demo": New → In progress.
+
+-------------------------------------------------------------------------------
+2026-11-19 12:48:03,965 INFO django.server "PATCH /api/tasks/01a1f3d9-8f70-77de-a78e-116333fc139a/ HTTP/1.1" 200 180
+2026-11-19 12:48:03,971 INFO django.server "PATCH /api/tasks/01a1f3d9-8f70-77de-a78e-116333fc139a/ HTTP/1.1" 200 180
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Subject: Task closed
+From: webmaster@localhost
+To: owner@example.com
+Date: Thu, 19 Nov 2026 12:48:03 +0000
+Message-ID: <179509248398.14.15948787950872393783@cc5aab186581>
+
+Task "Status notification demo": In progress → Done.
+
+-------------------------------------------------------------------------------
+2026-11-19 12:48:03,982 INFO django.server "PATCH /api/tasks/01a1f3d9-8f70-77de-a78e-116333fc139a/ HTTP/1.1" 200 173
+2026-11-19 12:48:03,987 INFO django.server "PATCH /api/tasks/01a1f3d9-8f70-77de-a78e-116333fc139a/ HTTP/1.1" 200 173
